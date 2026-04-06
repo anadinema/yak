@@ -45,6 +45,9 @@ theme:
         icon: material/weather-sunny
         name: Light
 
+extra_css:
+  - stylesheets/extra.css
+
 plugins:
   - search
 #  - git-revision-date-localized:
