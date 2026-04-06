@@ -5,7 +5,9 @@ site_url = "https://yak.anadinema.dev/"
 repo_url = "https://github.com/anadinema/yak"
 repo_name = "anadinema/yak"
 site_author = "Anadi Nema"
-copyright = "&copy; 2026 Anadi Nema."
+copyright = """
+&copy; 2026 Anadi Nema
+"""
 docs_dir = "docs"
 site_dir = "site"
 
@@ -50,34 +52,6 @@ nav = [
     ] }
 ]
 
-[project.extra.version]
-provider = "mike"
-
-[[project.theme.palette]]
-media = "(prefers-color-scheme)"
-toggle.icon = "lucide/sun-moon"
-toggle.name = "Switch to light mode"
-
-[[project.theme.palette]]
-media = "(prefers-color-scheme: light)"
-scheme = "default"
-# Use below once the catpucchin theme is usable in zensical
-# scheme = "latte"
-# primary = "custom"
-# accent = "custom"
-toggle.icon = "lucide/sun"
-toggle.name = "Switch to dark mode"
-
-[[project.theme.palette]]
-media = "(prefers-color-scheme: dark)"
-scheme = "slate"
-# Use below once the catpucchin theme is usable in zensical
-# scheme = "mocha"
-# primary = "custom"
-# accent = "custom"
-toggle.icon = "lucide/moon"
-toggle.name = "Switch to system preference"
-
 [project.theme]
 variant = "modern"
 language = "en"
@@ -96,7 +70,6 @@ features = [
     "navigation.expand",
     "navigation.path",
     "navigation.top",
-    "navigation.footer",
     "search.highlight",
     "content.code.copy",
     "content.code.select",
@@ -110,8 +83,42 @@ features = [
 repo = "fontawesome/brands/github"
 edit = "material/pencil"
 
+[project.extra.version]
+provider = "mike"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch to light mode"
+primary = "purple"
+accent = "deep purple"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+# Use below once the catpucchin theme is usable in zensical
+# scheme = "latte"
+# primary = "custom"
+# accent = "custom"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+primary = "purple"
+accent = "deep purple"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+# Use below once the catpucchin theme is usable in zensical
+# scheme = "mocha"
+# primary = "custom"
+# accent = "custom"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to system preference"
+primary = "purple"
+accent = "deep purple"
+
 [[project.extra.social]]
-icon = "fontawesome/solid/paper-plane"
+icon = "fontawesome/solid/envelope"
 link = "mailto:anadi.nema@outlook.com"
 
 [[project.extra.social]]
