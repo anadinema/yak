@@ -5,20 +5,50 @@ on:
     branches:
       - main
     paths:
+      - 'zensical.toml'
       - 'docs/**'
-      - 'mkdocs.yml'
       - '.github/workflows/ci-docs.yml'
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - name: configure-gh-pages
+        uses: actions/configure-pages@v6
+
+      - name: checkout-repository
+        uses: actions/checkout@v6
+
+      - name: setup-python
+        uses: actions/setup-python@v6
         with:
           python-version: 3.x
-      - run: pip install mkdocs-material
-      - run: mkdocs gh-deploy --force
+
+      - name: install zensical
+        run: |
+          pip install zensical
+
+      - name: build-site
+        run: |
+          zensical build --clean
+
+      - name: upload-site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+      - name: deploy-site
+        uses: actions/deploy-pages@v5
+        id: deployment
