@@ -8,7 +8,7 @@ yak wraps the AWS CLI to make account switching, SSO login, credential managemen
 
 ## What it does
 
-```sh
+```shell
 # Switch to your prod account with a single command
 yak account prod
 
@@ -32,20 +32,20 @@ If `yak` doesn't know a command, it [passes it through](guides/shell-integration
 
 ## Quick install
 
-=== "macOS (Homebrew)"
+=== "`macOS (Homebrew)`"
 
-    ```sh
+    ```shell
     brew tap anadinema/tap
     brew install yak
     ```
 
-=== "Linux"
+=== "`Linux`"
 
-    ```sh
+    ```shell
     curl -fsSL https://raw.githubusercontent.com/anadinema/yak/main/install.sh | bash
     ```
 
-=== "Windows (Git Bash)"
+=== "`Windows (Git Bash)`"
 
     Download the `linux_amd64` binary from the [latest release](https://github.com/anadinema/yak/releases/latest) and place it in `~/bin`.
 

@@ -9,12 +9,15 @@ copyright = "&copy; 2026 Anadi Nema."
 docs_dir = "docs"
 site_dir = "site"
 
+# Use below once the catpucchin theme is usable in zensical
+# extra_css = ["stylesheets/extra.css"]
+
 nav = [
     { "Home" = "index.md" },
     { "Getting Started" = [
         { "Install" = "install.md" },
         { "Quickstart" = "quickstart.md" }
-    ]},
+    ] },
     { "Configuration" = [
         { "Overview" = "config/overview.md" },
         { "Reference" = "config/reference.md" },
@@ -23,8 +26,8 @@ nav = [
             { "TOML + 1Password" = "config/examples/toml-op.md" },
             { "YAML + Env vars" = "config/examples/yaml-env.md" },
             { "YAML + 1Password" = "config/examples/yaml-op.md" }
-        ]}
-    ]},
+        ] }
+    ] },
     { "Commands" = [
         { "Overview" = "commands/index.md" },
         { "Subcommands" = [
@@ -36,29 +39,19 @@ nav = [
             { "status" = "commands/status.md" },
             { "accounts" = "commands/accounts.md" },
             { "roles" = "commands/roles.md" }
-        ]}
-    ]},
+        ] }
+    ] },
     { "Guides" = [
         { "Windows (Git Bash)" = "guides/windows-git-bash.md" },
         { "Shell Integration" = "guides/shell-integration.md" },
         { "Migrating from Shell Functions" = "guides/migrating.md" },
         { "Using with 1Password" = "guides/onepassword.md" },
         { "Safeguards" = "guides/safeguards.md" }
-    ]}
+    ] }
 ]
 
 [project.extra.version]
 provider = "mike"
-
-[project.theme]
-variant = "modern"
-language = "en"
-logo = "assets/yak.png"
-favicon = "assets/yak.ico"
-
-[project.theme.font]
-text = "Poppins"
-code = "JetBrains Mono"
 
 [[project.theme.palette]]
 media = "(prefers-color-scheme)"
@@ -68,14 +61,30 @@ toggle.name = "Switch to light mode"
 [[project.theme.palette]]
 media = "(prefers-color-scheme: light)"
 scheme = "default"
+# Use below once the catpucchin theme is usable in zensical
+# scheme = "latte"
+# primary = "custom"
+# accent = "custom"
 toggle.icon = "lucide/sun"
 toggle.name = "Switch to dark mode"
 
 [[project.theme.palette]]
 media = "(prefers-color-scheme: dark)"
 scheme = "slate"
+# Use below once the catpucchin theme is usable in zensical
+# scheme = "mocha"
+# primary = "custom"
+# accent = "custom"
 toggle.icon = "lucide/moon"
 toggle.name = "Switch to system preference"
+
+[project.theme]
+variant = "modern"
+language = "en"
+logo = "assets/yak.png"
+favicon = "assets/yak.ico"
+font.text = "Poppins"
+font.code = "JetBrains Mono"
 
 features = [
     "navigation.sections",
@@ -83,16 +92,12 @@ features = [
     "navigation.instant.prefetch",
     "navigation.instant.progress",
     "navigation.tracking",
-    "navigation.tabs",
-    "navigation.tabs.sticky",
     "navigation.sections",
     "navigation.expand",
     "navigation.path",
     "navigation.top",
     "navigation.footer",
-    "search.suggest",
     "search.highlight",
-    "search.share",
     "content.code.copy",
     "content.code.select",
     "content.code.annotate",
@@ -124,6 +129,7 @@ link = "https://github.com/anadinema"
 [project.markdown_extensions.pymdownx.highlight]
 anchor_linenums = true
 line_spans = "__span"
+linenums = true
 pygments_lang_class = true
 
 [project.markdown_extensions.pymdownx.inlinehilite]
