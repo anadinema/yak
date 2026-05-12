@@ -13,7 +13,7 @@ func setupCmd(app *appContext) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "setup",
 		Short: "Generate ~/.aws/config from your yak config",
-		Long: `Reads ~/.config/yak/config.toml, resolves all secret values, and writes
+		Long: `Reads ~/.config/yak/config.(toml|yaml), resolves all secret values, and writes
 a valid ~/.aws/config with one [profile name] block per configured account.
 
 Per-account default_role is used for each profile (falling back to global
@@ -56,6 +56,6 @@ adding accounts, changing role names, or changing sso_start_url.`,
 		},
 	}
 
-	cmd.Flags().BoolVar(&dryRun, "dry-run", false, "print what would be written without touching any files")
+	cmd.Flags().BoolVarP(&dryRun, "dry-run", "d", false, "print what would be written without touching any files")
 	return cmd
 }

@@ -25,9 +25,6 @@ Use --bypass-safeguards or -b to override (requires confirmation).`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cfg := app.cfg
-			if err := app.loadSSOConfig(); err != nil {
-				return err
-			}
 
 			targetRole := config.ResolveRoleAlias(cfg, args[0])
 

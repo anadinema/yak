@@ -41,7 +41,6 @@ func exportCmd(app *appContext) *cobra.Command {
 				return nil
 			}
 
-			// Single account
 			target := accountFlag
 			if target == "" {
 				st, err := state.Load()
@@ -63,8 +62,8 @@ func exportCmd(app *appContext) *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVar(&accountFlag, "account", "", "export credentials for a specific account")
-	cmd.Flags().BoolVar(&allFlag, "all", false, "export credentials for all configured accounts")
+	cmd.Flags().StringVarP(&accountFlag, "account", "a", "", "export credentials for a specific account")
+	cmd.Flags().BoolVarP(&allFlag, "all", "f", false, "export credentials for all configured accounts")
 	return cmd
 }
 
@@ -151,8 +150,8 @@ func statusCmd(app *appContext) *cobra.Command {
 		},
 	}
 
-	cmd.Flags().BoolVar(&jsonFlag, "json", false, "output as JSON")
-	cmd.Flags().BoolVar(&printProfile, "print-profile", false, "print only the active AWS profile name (used by the shell wrapper)")
+	cmd.Flags().BoolVarP(&jsonFlag, "json", "o", false, "output as JSON")
+	cmd.Flags().BoolVarP(&printProfile, "print-profile", "p", false, "print only the active AWS profile name (used by the shell wrapper)")
 	return cmd
 }
 
@@ -171,10 +170,18 @@ func accountsCmd(app *appContext) *cobra.Command {
 				return json.NewEncoder(os.Stdout).Encode(cfg.Accounts)
 			}
 
+			re, _ := resolver.New(cfg.Secrets.CacheTTL, false)
+
 			tbl := table.New("NAME", "ID", "DEFAULT ROLE", "ALLOWED ROLES", "SAFEGUARD")
 			tbl.WithWriter(os.Stdout)
 			for _, a := range cfg.Accounts {
-				id := maskAccountID(a.AccountID)
+				resolvedId, err := re.Resolve(a.AccountID)
+				var id string
+				if err != nil {
+					id = maskAccountID(a.AccountID)
+				} else {
+					id = maskAccountID(resolvedId)
+				}
 				defaultRole := a.DefaultRole
 				if defaultRole == "" {
 					defaultRole = cfg.DefaultRole
@@ -198,7 +205,7 @@ func accountsCmd(app *appContext) *cobra.Command {
 		},
 	}
 
-	cmd.Flags().BoolVar(&jsonFlag, "json", false, "output as JSON")
+	cmd.Flags().BoolVarP(&jsonFlag, "json", "o", false, "output as JSON")
 	return cmd
 }
 
@@ -214,13 +221,11 @@ func rolesCmd(app *appContext) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cfg := app.cfg
 
-			// Build reverse alias map: role → aliases
 			roleAliases := make(map[string][]string)
 			for alias, role := range cfg.Aliases.Roles {
 				roleAliases[role] = append(roleAliases[role], alias)
 			}
 
-			// If --account specified, filter by allowed roles
 			var allowedFilter map[string]bool
 			if accountFlag != "" {
 				accountName := config.ResolveAccountAlias(cfg, accountFlag)

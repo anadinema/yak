@@ -19,7 +19,7 @@ func loginCmd(app *appContext) *cobra.Command {
 		Long:  `Runs 'aws sso login' for the active account, then exports credentials.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cfg := app.cfg
-			if err := app.loadSSOConfig(); err != nil {
+			if err := app.loadAWSConfigState(); err != nil {
 				return err
 			}
 
@@ -42,7 +42,7 @@ func loginCmd(app *appContext) *cobra.Command {
 			}
 
 			targetRole := ""
-			if cfg.UseRoleFromState {
+			if cfg.UseActiveRole {
 				targetRole = st.ActiveRole
 			}
 			if roleFlag != "" {
@@ -51,14 +51,24 @@ func loginCmd(app *appContext) *cobra.Command {
 			if targetRole == "" {
 				targetRole = config.EffectiveDefaultRole(cfg, account)
 			}
-			configRole := app.ssoConfig.RoleForProfile(targetAccountName)
-			roleChangedFromConfig := targetRole != configRole
+			resolved, err := resolveAccounts(cfg, targetAccountName, targetRole)
+			if err != nil {
+				return err
+			}
+			expectedRoleName := ""
+			for _, ra := range resolved {
+				if ra.Name == targetAccountName {
+					expectedRoleName = ra.RoleName
+					break
+				}
+			}
+			if expectedRoleName == "" {
+				return fmt.Errorf("could not determine resolved role for account %q", targetAccountName)
+			}
+			currentRoleName := app.awsConfigState.RoleNameForProfile(targetAccountName)
+			roleChangedFromConfig := expectedRoleName != currentRoleName
 
 			if roleChangedFromConfig {
-				resolved, err := resolveAccounts(cfg, targetAccountName, targetRole)
-				if err != nil {
-					return err
-				}
 				if err := aws.WriteConfig(cfg.AWS.ConfigPath, cfg.SSOSessionName, resolved); err != nil {
 					return fmt.Errorf("writing AWS config: %w", err)
 				}
@@ -84,7 +94,7 @@ func loginCmd(app *appContext) *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVar(&accountFlag, "account", "", "login as a specific account instead of the active one")
-	cmd.Flags().StringVar(&roleFlag, "role", "", "use a specific role tier for this login")
+	cmd.Flags().StringVarP(&accountFlag, "account", "a", "", "login as a specific account instead of the active one")
+	cmd.Flags().StringVarP(&roleFlag, "role", "r", "", "use a specific role tier for this login")
 	return cmd
 }

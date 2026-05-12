@@ -7,9 +7,11 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/anadinema/yak/internal/config"
 	"github.com/anadinema/yak/internal/resolver"
+	"github.com/anadinema/yak/internal/state"
 )
 
 type ResolvedAccount struct {
@@ -68,7 +70,23 @@ func WriteConfig(configPath, ssoSessionName string, accounts []ResolvedAccount) 
 		return err
 	}
 	_, err = WriteConfigIfChanged(configPath, rendered)
-	return err
+	if err != nil {
+		return err
+	}
+
+	configState := &state.AWSConfigState{
+		UpdatedAt: time.Now().UTC(),
+		Profiles:  make(map[string]state.ProfileAWSConfigState, len(accounts)),
+	}
+	for _, account := range accounts {
+		configState.Profiles[account.Name] = state.ProfileAWSConfigState{
+			AccountID: account.AccountID,
+			RoleName:  account.RoleName,
+			Region:    account.Region,
+		}
+	}
+
+	return state.SaveAWSConfigState(configState)
 }
 
 // RenderConfig returns full AWS config text for the resolved accounts.

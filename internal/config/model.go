@@ -2,12 +2,12 @@ package config
 
 // Config is the top-level structure of ~/.config/yak/config.toml
 type Config struct {
-	DefaultAccount   string `mapstructure:"default_account"`
-	DefaultRole      string `mapstructure:"default_role"`
-	Region           string `mapstructure:"region"`
-	SSOStartURL      string `mapstructure:"sso_start_url"`
-	SSOSessionName   string `mapstructure:"sso_session_name"`
-	UseRoleFromState bool   `mapstructure:"use_state_role"`
+	DefaultAccount string `mapstructure:"default_account"`
+	DefaultRole    string `mapstructure:"default_role"`
+	Region         string `mapstructure:"region"`
+	SSOStartURL    string `mapstructure:"sso_start_url"`
+	SSOSessionName string `mapstructure:"sso_session_name"`
+	UseActiveRole  bool   `mapstructure:"use_active_role"`
 
 	AWS        AWSConfig         `mapstructure:"aws"`
 	Secrets    SecretsConfig     `mapstructure:"secrets"`
@@ -40,7 +40,7 @@ type Account struct {
 	Region        string            `mapstructure:"region"`
 	AllowedRoles  []string          `mapstructure:"allowed_roles"`
 	RoleOverrides map[string]string `mapstructure:"role_overrides"`
-	Safeguard     *bool             `mapstructure:"safeguard"` // nil = inherit from safeguards config
+	Safeguard     *bool             `mapstructure:"safeguard"`
 }
 
 type AliasConfig struct {

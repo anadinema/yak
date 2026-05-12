@@ -21,7 +21,7 @@ func accountCmd(app *appContext) *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cfg := app.cfg
-			if err := app.loadSSOConfig(); err != nil {
+			if err := app.loadAWSConfigState(); err != nil {
 				return err
 			}
 
@@ -37,7 +37,7 @@ func accountCmd(app *appContext) *cobra.Command {
 			}
 
 			targetRole := ""
-			if cfg.UseRoleFromState {
+			if cfg.UseActiveRole {
 				targetRole = st.ActiveRole
 			}
 			if roleFlag != "" {
@@ -46,8 +46,6 @@ func accountCmd(app *appContext) *cobra.Command {
 			if targetRole == "" {
 				targetRole = config.EffectiveDefaultRole(cfg, account)
 			}
-			configRole := app.ssoConfig.RoleForProfile(targetName)
-			roleChangedFromConfig := targetRole != configRole
 
 			if !aws.IsRoleAllowed(account, targetRole) {
 				return fmt.Errorf(
@@ -66,11 +64,24 @@ func accountCmd(app *appContext) *cobra.Command {
 				_ = audit.Log(account.Name, targetRole)
 			}
 
-			if roleChangedFromConfig {
-				resolved, err := resolveAccounts(cfg, targetName, targetRole)
-				if err != nil {
-					return err
+			resolved, err := resolveAccounts(cfg, targetName, targetRole)
+			if err != nil {
+				return err
+			}
+			expectedRoleName := ""
+			for _, ra := range resolved {
+				if ra.Name == targetName {
+					expectedRoleName = ra.RoleName
+					break
 				}
+			}
+			if expectedRoleName == "" {
+				return fmt.Errorf("could not determine resolved role for account %q", targetName)
+			}
+			currentRoleName := app.awsConfigState.RoleNameForProfile(targetName)
+			roleChangedFromConfig := expectedRoleName != currentRoleName
+
+			if roleChangedFromConfig {
 				if err := aws.WriteConfig(cfg.AWS.ConfigPath, cfg.SSOSessionName, resolved); err != nil {
 					return fmt.Errorf("writing AWS config: %w", err)
 				}
@@ -95,7 +106,7 @@ func accountCmd(app *appContext) *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVar(&roleFlag, "role", "", "also switch to this role tier when changing account")
-	cmd.Flags().BoolVar(&bypassSafeguards, "bypass-safeguards", false, "override safeguard restrictions (requires confirmation)")
+	cmd.Flags().StringVarP(&roleFlag, "role", "r", "", "also switch to this role tier when changing account")
+	cmd.Flags().BoolVarP(&bypassSafeguards, "bypass-safeguards", "b", false, "override safeguard restrictions (requires confirmation)")
 	return cmd
 }

@@ -13,8 +13,8 @@ import (
 var configPath string
 
 type appContext struct {
-	cfg       *config.Config
-	ssoConfig *state.SSOConfig
+	cfg            *config.Config
+	awsConfigState *state.AWSConfigState
 }
 
 func (appCtx *appContext) loadConfig() error {
@@ -29,15 +29,15 @@ func (appCtx *appContext) loadConfig() error {
 	return nil
 }
 
-func (appCtx *appContext) loadSSOConfig() error {
-	if appCtx.ssoConfig != nil {
+func (appCtx *appContext) loadAWSConfigState() error {
+	if appCtx.awsConfigState != nil {
 		return nil
 	}
-	cfg, err := state.LoadSSOConfig(appCtx.cfg.AWS.ConfigPath)
+	cfg, err := state.LoadAWSConfigState()
 	if err != nil {
 		return err
 	}
-	appCtx.ssoConfig = cfg
+	appCtx.awsConfigState = cfg
 	return nil
 }
 
