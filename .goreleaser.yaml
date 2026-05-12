@@ -44,8 +44,6 @@ release:
 
 homebrew_casks:
   - name: yak
-    ids:
-      - yak
     repository:
       owner: anadinema
       name: homebrew-tap
