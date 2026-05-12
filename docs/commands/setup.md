@@ -10,14 +10,14 @@ yak setup [flags]
 
 ## Description
 
-Reads `~/.config/yak/config.toml`, resolves all secret values, and writes a valid `~/.aws/config` with one `[profile name]` block per configured account. The active role tier from state is used to determine which role goes into each profile block.
+Reads `~/.config/yak/config.toml`, resolves all secret values, and writes a valid `~/.aws/config` with one `[profile name]` block per configured account. Per-account `default_role` (falling back to global `default_role`) is used to determine which role goes into each profile block.
 
 Run `yak setup` after:
 
 - First-time setup
 - Adding or removing accounts
 - Changing role names in config
-- Changing `sso_start_url`
+- Changing `aws.sso_start_url`
 
 ## Flags
 

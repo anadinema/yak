@@ -4,8 +4,15 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
+
+var logDirOverride string
+
+func SetLogDir(path string) {
+	logDirOverride = path
+}
 
 // Log appends a bypass event to the audit log file.
 func Log(account, requestedRole string) error {
@@ -39,9 +46,22 @@ func Log(account, requestedRole string) error {
 }
 
 func auditFile() (string, error) {
+	if logDirOverride != "" {
+		return filepath.Join(expandConfiguredDir(logDirOverride), "audit.log"), nil
+	}
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
 	return filepath.Join(home, ".local", "share", "yak", "audit.log"), nil
+}
+
+func expandConfiguredDir(path string) string {
+	if strings.HasPrefix(path, "~/") {
+		home, err := os.UserHomeDir()
+		if err == nil {
+			return filepath.Join(home, path[2:])
+		}
+	}
+	return path
 }

@@ -53,7 +53,7 @@ yak displays a prominent warning and requires you to type the account name to co
   Type the account name to confirm: _
 ```
 
-Typing the wrong account name cancels the operation. All bypasses are logged with timestamp, account, role, and username to `~/.local/share/yak/audit.log`.
+Typing the wrong account name cancels the operation. All bypasses are logged with timestamp, account, role, and username to `audit.log` in `paths.log_dir` (default `~/.local/share/yak`).
 
 ## Per-account safeguard override
 

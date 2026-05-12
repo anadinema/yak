@@ -97,7 +97,7 @@ Use --bypass-safeguards or -b to override (requires confirmation).`,
 				return err
 			}
 
-			if err := aws.WriteConfig(cfg.AWS.ConfigPath, cfg.SSOSessionName, resolved); err != nil {
+			if err := aws.WriteConfig(cfg.AWS.ConfigPath, cfg.AWS.SSOSessionName, resolved); err != nil {
 				return fmt.Errorf("writing AWS config: %w", err)
 			}
 

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -16,7 +17,16 @@ type State struct {
 	LastLogin     time.Time `json:"last_login,omitempty"`
 }
 
+var stateDirOverride string
+
+func SetStateDir(path string) {
+	stateDirOverride = path
+}
+
 func stateFile() (string, error) {
+	if stateDirOverride != "" {
+		return filepath.Join(expandConfiguredDir(stateDirOverride), "state.json"), nil
+	}
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", fmt.Errorf("could not determine home directory: %w", err)
@@ -90,4 +100,14 @@ func SetLogin(account, role string) error {
 	s.ActiveRole = role
 	s.LastLogin = time.Now().UTC()
 	return Save(s)
+}
+
+func expandConfiguredDir(path string) string {
+	if strings.HasPrefix(path, "~/") {
+		home, err := os.UserHomeDir()
+		if err == nil {
+			return filepath.Join(home, path[2:])
+		}
+	}
+	return path
 }

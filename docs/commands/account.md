@@ -12,7 +12,7 @@ yak account <name> [flags]
 
 Switches the active account, regenerates `~/.aws/config` with the new active account context, and exports credentials for the new account. Accepts full account names or any configured alias.
 
-Updates `~/.local/share/yak/state.json` with the new active account.
+Updates `state.json` in your configured state directory (`paths.state_dir`, default `~/.local/share/yak`).
 
 ## Flags
 

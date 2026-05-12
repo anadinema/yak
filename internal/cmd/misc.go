@@ -109,7 +109,7 @@ func statusCmd(app *appContext) *cobra.Command {
 			}
 
 			account := config.FindAccount(cfg, activeAccount)
-			region := cfg.Region
+			region := cfg.AWS.Region
 			if account != nil {
 				region = config.EffectiveRegion(cfg, account)
 			}

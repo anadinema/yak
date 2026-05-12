@@ -7,12 +7,18 @@ Complete `~/.config/yak/config.yaml` using environment variables for all sensiti
 default_account: dev
 default_role: admin
 use_active_role: false
-region: eu-north-1
-sso_start_url: "${AWS_SSO_URL}"
 
 aws:
   credentials_path: ~/.aws/credentials
   config_path: ~/.aws/config
+  region: eu-north-1
+  sso_start_url: "${AWS_SSO_URL}"
+  sso_session_name: yak
+
+paths:
+  cache_dir: ~/.local/share/yak
+  state_dir: ~/.local/share/yak
+  log_dir: ~/.local/share/yak
 
 secrets:
   cache_ttl: 60

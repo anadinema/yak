@@ -8,20 +8,16 @@ Complete reference for every field in `~/.config/yak/config.toml` (or `config.ya
 
 Top-level fields that apply to all accounts unless overridden at the account level.
 
-| Field             | Type   | Required | Description                                                                                               |
-|-------------------|--------|----------|-----------------------------------------------------------------------------------------------------------|
-| `default_account` | string | yes      | Account name to use when none is specified. Must match a name in `[[accounts]]`.                        |
-| `default_role`    | string | yes      | Role tier to use when none is specified. Must match a key in `[roles]`.                                 |
-| `use_active_role` | bool   | no       | If `true`, `yak account` and `yak login` prefer the active role from `~/.local/share/yak/state.json`.  |
-| `region`          | string | yes      | AWS region. Can be overridden per account.                                                                |
-| `sso_start_url`   | string | yes      | Your AWS SSO portal URL. Supports `${VAR}` and `op://`.                                                  |
+| Field             | Type   | Required | Description                                                                                              |
+|-------------------|--------|----------|----------------------------------------------------------------------------------------------------------|
+| `default_account` | string | yes      | Account name to use when none is specified. Must match a name in `[[accounts]]`.                       |
+| `default_role`    | string | yes      | Role tier to use when none is specified. Must match a key in `[roles]`.                                |
+| `use_active_role` | bool   | no       | If `true`, `yak account` and `yak login` prefer the active role from `~/.local/share/yak/state.json`. |
 
 ```toml
 default_account = "dev"
 default_role    = "admin"
 use_active_role = false
-region          = "eu-west-1"
-sso_start_url   = "${AWS_SSO_URL}"
 ```
 
 ---
@@ -30,15 +26,40 @@ sso_start_url   = "${AWS_SSO_URL}"
 
 Paths for the AWS files that yak generates and writes to.
 
-| Field              | Type   | Default              | Description                                   |
-|--------------------|--------|----------------------|-----------------------------------------------|
-| `credentials_path` | string | `~/.aws/credentials` | Where to write exported SSO credentials.      |
-| `config_path`      | string | `~/.aws/config`      | Where to write the generated AWS config file. |
+| Field              | Type   | Default                  | Description                                   |
+|--------------------|--------|--------------------------|-----------------------------------------------|
+| `credentials_path` | string | `~/.aws/credentials`     | Where to write exported SSO credentials.      |
+| `config_path`      | string | `~/.aws/config`          | Where to write the generated AWS config file. |
+| `region`           | string | none (required)          | Default AWS region. Can be overridden per account. |
+| `sso_start_url`    | string | none (required)          | Your AWS SSO portal URL. Supports `${VAR}` and `op://`. |
+| `sso_session_name` | string | none (required)          | AWS SSO session name written into `~/.aws/config`. |
 
 ```toml
 [aws]
 credentials_path = "~/.aws/credentials"
 config_path      = "~/.aws/config"
+region           = "eu-west-1"
+sso_start_url    = "${AWS_SSO_URL}"
+sso_session_name = "yak"
+```
+
+---
+
+## [paths]
+
+Overrides yak runtime directories. If omitted, yak falls back to `~/.local/share/yak`.
+
+| Field       | Type   | Default | Description |
+|-------------|--------|---------|-------------|
+| `cache_dir` | string | `""`    | Directory for secret cache file (`secret_cache`). |
+| `state_dir` | string | `""`    | Directory for state files (`state.json`, `config.state.json`). |
+| `log_dir`   | string | `""`    | Directory for audit log (`audit.log`). |
+
+```toml
+[paths]
+cache_dir = "~/.local/share/yak"
+state_dir = "~/.local/share/yak"
+log_dir   = "~/.local/share/yak"
 ```
 
 ---

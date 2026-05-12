@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/anadinema/yak/internal/audit"
 	"github.com/anadinema/yak/internal/config"
+	"github.com/anadinema/yak/internal/resolver"
 	"github.com/anadinema/yak/internal/state"
 	"github.com/anadinema/yak/internal/version"
 	"github.com/spf13/cobra"
@@ -26,6 +28,9 @@ func (appCtx *appContext) loadConfig() error {
 		return err
 	}
 	appCtx.cfg = cfg
+	resolver.SetCacheDir(cfg.Paths.CacheDir)
+	state.SetStateDir(cfg.Paths.StateDir)
+	audit.SetLogDir(cfg.Paths.LogDir)
 	return nil
 }
 

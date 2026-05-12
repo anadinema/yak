@@ -15,8 +15,6 @@ const (
 	defaultConfigName = "config"
 )
 
-// Load reads the config file from the default location or the path override.
-// TOML is tried first, then YAML.
 func Load(overridePath string) (*Config, error) {
 	v := viper.New()
 
@@ -29,7 +27,6 @@ func Load(overridePath string) (*Config, error) {
 		}
 		v.AddConfigPath(filepath.Join(home, defaultConfigDir))
 		v.SetConfigName(defaultConfigName)
-		// viper will try .toml then .yaml automatically
 	}
 
 	if err := v.ReadInConfig(); err != nil {
@@ -62,14 +59,14 @@ func validate(cfg *Config) error {
 	if cfg.DefaultRole == "" {
 		errs = append(errs, "default_role is required")
 	}
-	if cfg.Region == "" {
-		errs = append(errs, "region is required")
+	if cfg.AWS.Region == "" {
+		errs = append(errs, "aws.region is required")
 	}
-	if cfg.SSOStartURL == "" {
-		errs = append(errs, "sso_start_url is required")
+	if cfg.AWS.SSOStartURL == "" {
+		errs = append(errs, "aws.sso_start_url is required")
 	}
-	if cfg.SSOSessionName == "" {
-		errs = append(errs, "sso_session_name is required")
+	if cfg.AWS.SSOSessionName == "" {
+		errs = append(errs, "aws.sso_session_name is required")
 	}
 	if len(cfg.Roles) == 0 {
 		errs = append(errs, "at least one role must be defined in [roles]")
@@ -179,7 +176,7 @@ func EffectiveRegion(cfg *Config, accountCfg *Account) string {
 	if accountCfg.Region != "" {
 		return accountCfg.Region
 	}
-	return cfg.Region
+	return cfg.AWS.Region
 }
 
 func EffectiveDefaultRole(cfg *Config, accountCfg *Account) string {

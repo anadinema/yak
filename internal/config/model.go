@@ -4,11 +4,9 @@ package config
 type Config struct {
 	DefaultAccount string `mapstructure:"default_account"`
 	DefaultRole    string `mapstructure:"default_role"`
-	Region         string `mapstructure:"region"`
-	SSOStartURL    string `mapstructure:"sso_start_url"`
-	SSOSessionName string `mapstructure:"sso_session_name"`
 	UseActiveRole  bool   `mapstructure:"use_active_role"`
 
+	Paths      PathConfiguration `mapstructure:"paths"`
 	AWS        AWSConfig         `mapstructure:"aws"`
 	Secrets    SecretsConfig     `mapstructure:"secrets"`
 	Safeguards SafeguardsConfig  `mapstructure:"safeguards"`
@@ -20,6 +18,15 @@ type Config struct {
 type AWSConfig struct {
 	CredentialsPath string `mapstructure:"credentials_path"`
 	ConfigPath      string `mapstructure:"config_path"`
+	Region          string `mapstructure:"region"`
+	SSOStartURL     string `mapstructure:"sso_start_url"`
+	SSOSessionName  string `mapstructure:"sso_session_name"`
+}
+
+type PathConfiguration struct {
+	CacheDir string `mapstructure:"cache_dir"`
+	StateDir string `mapstructure:"state_dir"`
+	LogDir   string `mapstructure:"log_dir"`
 }
 
 type SecretsConfig struct {

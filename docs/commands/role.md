@@ -19,7 +19,7 @@ If the target account is protected by safeguards and the requested tier exceeds 
 | Flag                  | Description                                                                                                                           |
 |-----------------------|---------------------------------------------------------------------------------------------------------------------------------------|
 | `--account <name>`    | Apply the role switch to a specific account only                                                                                      |
-| `--bypass-safeguards` | Override safeguard restrictions for this operation. Requires confirmation. All bypasses are logged to `~/.local/share/yak/audit.log`. |
+| `--bypass-safeguards` | Override safeguard restrictions for this operation. Requires confirmation. All bypasses are logged to `audit.log` in `paths.log_dir` (default `~/.local/share/yak`). |
 
 ## Examples
 
@@ -43,4 +43,4 @@ When `--bypass-safeguards` is used on a protected account, yak displays a warnin
   Type the account name to confirm: _
 ```
 
-This action is logged with timestamp to `~/.local/share/yak/audit.log`.
+This action is logged with timestamp to `audit.log` in `paths.log_dir` (default `~/.local/share/yak`).

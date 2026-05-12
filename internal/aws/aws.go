@@ -46,7 +46,7 @@ func ResolveAccount(
 	}
 
 	// Resolve SSO start URL
-	ssoStart, err := res.Resolve(cfg.SSOStartURL)
+	ssoStart, err := res.Resolve(cfg.AWS.SSOStartURL)
 	if err != nil {
 		return nil, fmt.Errorf("sso_start_url: %w", err)
 	}

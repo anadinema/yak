@@ -69,8 +69,11 @@ yak maintains two files at runtime that are separate from your config and never 
 | File                              | Purpose                                       |
 |-----------------------------------|-----------------------------------------------|
 | `~/.local/share/yak/state.json`   | Active account and role tier, last login time |
+| `~/.local/share/yak/config.state.json` | Last written resolved AWS profile state |
 | `~/.local/share/yak/secret_cache` | Cached `op://` values with timestamps         |
 | `~/.local/share/yak/audit.log`    | Record of safeguard bypasses                  |
+
+You can override these directories with `[paths].cache_dir`, `[paths].state_dir`, and `[paths].log_dir`.
 
 ---
 
@@ -78,8 +81,9 @@ yak maintains two files at runtime that are separate from your config and never 
 
 | Section              | Purpose                                                                       |
 |----------------------|-------------------------------------------------------------------------------|
-| Global defaults      | `default_account`, `default_role`, `use_active_role`, `region`, `sso_start_url` |
-| `[aws]`              | Paths for generated AWS files                                                 |
+| Global defaults      | `default_account`, `default_role`, `use_active_role` |
+| `[aws]`              | Paths for generated AWS files + AWS region/SSO settings |
+| `[paths]`            | Runtime directories for cache/state/log files |
 | `[secrets]`          | `op://` cache TTL                                                             |
 | `[safeguards]`       | Production account protection                                                 |
 | `[roles]`            | Role tier definitions and values                                              |

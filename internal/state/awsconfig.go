@@ -32,6 +32,9 @@ func (s *AWSConfigState) RoleNameForProfile(profileName string) string {
 }
 
 func awsConfigStateFile() (string, error) {
+	if stateDirOverride != "" {
+		return filepath.Join(expandConfiguredDir(stateDirOverride), "config.state.json"), nil
+	}
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", fmt.Errorf("could not determine home directory: %w", err)

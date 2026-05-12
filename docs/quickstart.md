@@ -15,12 +15,13 @@ Create `~/.config/yak/config.toml`. Start minimal — you can add accounts and r
 ```toml
 default_account = "dev"
 default_role    = "developer"
-region          = "eu-west-1"
-sso_start_url   = "${AWS_SSO_URL}"
 
 [aws]
 credentials_path = "~/.aws/credentials"
 config_path      = "~/.aws/config"
+region           = "eu-west-1"
+sso_start_url    = "${AWS_SSO_URL}"
+sso_session_name = "yak"
 
 [secrets]
 cache_ttl = 60

@@ -16,12 +16,13 @@ op://vault/item/field
 
 ```toml
 account_id    = "op://Private/AWS Accounts/dev_account_id"
+[aws]
 sso_start_url = "op://Private/AWS/sso_start_url"
 ```
 
 ## Caching
 
-To avoid calling `op` on every yak command, resolved values are cached in `~/.local/share/yak/secret_cache` with permissions `0600`. The cache lifetime is controlled by `secrets.cache_ttl` in minutes.
+To avoid calling `op` on every yak command, resolved values are cached in `secret_cache` under `paths.cache_dir` (default `~/.local/share/yak`) with permissions `0600`. The cache lifetime is controlled by `secrets.cache_ttl` in minutes.
 
 ```toml
 [secrets]
@@ -72,9 +73,12 @@ Work/
 You can mix `op://`, `${VAR}`, and plain text freely within a single config file:
 
 ```toml
-region        = "eu-west-1"                          # plain text
-sso_start_url = "${AWS_SSO_URL}"                     # env var
-account_id    = "op://Private/AWS Accounts/dev_id"      # 1Password
+[aws]
+region        = "eu-west-1"                           # plain text
+sso_start_url = "${AWS_SSO_URL}"                      # env var
+
+[[accounts]]
+account_id    = "op://Private/AWS Accounts/dev_id"   # 1Password
 ```
 
 yak detects the format automatically for each value.

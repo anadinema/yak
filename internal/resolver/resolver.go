@@ -22,6 +22,12 @@ type Resolver struct {
 	bypassCache bool // set to true for yak login
 }
 
+var cacheDirOverride string
+
+func SetCacheDir(path string) {
+	cacheDirOverride = path
+}
+
 type cacheEntry struct {
 	Value     string    `json:"value"`
 	ExpiresAt time.Time `json:"expires_at"`
@@ -156,9 +162,22 @@ func (r *Resolver) saveCache() error {
 }
 
 func defaultCacheFile() (string, error) {
+	if cacheDirOverride != "" {
+		return filepath.Join(expandConfiguredDir(cacheDirOverride), "secret_cache"), nil
+	}
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", fmt.Errorf("could not determine home directory: %w", err)
 	}
 	return filepath.Join(home, ".local", "share", "yak", "secret_cache"), nil
+}
+
+func expandConfiguredDir(path string) string {
+	if strings.HasPrefix(path, "~/") {
+		home, err := os.UserHomeDir()
+		if err == nil {
+			return filepath.Join(home, path[2:])
+		}
+	}
+	return path
 }

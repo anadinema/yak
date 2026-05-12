@@ -30,14 +30,14 @@ adding accounts, changing role names, or changing sso_start_url.`,
 			if dryRun {
 				fmt.Println("# Dry run — would write the following to", cfg.AWS.ConfigPath)
 				fmt.Println()
-				fmt.Printf("[sso-session %s]\n", cfg.SSOSessionName)
+				fmt.Printf("[sso-session %s]\n", cfg.AWS.SSOSessionName)
 				fmt.Printf("sso_start_url            = %s\n", resolved[0].SSOStart)
 				fmt.Printf("sso_region               = %s\n", resolved[0].SSORegion)
 				fmt.Printf("sso_registration_scopes  = sso:account:access\n")
 				fmt.Println()
 				for _, ra := range resolved {
 					fmt.Printf("[profile %s]\n", ra.Name)
-					fmt.Printf("sso_session    = %s\n", cfg.SSOSessionName)
+					fmt.Printf("sso_session    = %s\n", cfg.AWS.SSOSessionName)
 					fmt.Printf("sso_account_id = %s\n", ra.AccountID)
 					fmt.Printf("sso_role_name  = %s\n", ra.RoleName)
 					fmt.Printf("region         = %s\n", ra.Region)
@@ -46,7 +46,7 @@ adding accounts, changing role names, or changing sso_start_url.`,
 				return nil
 			}
 
-			if err := aws.WriteConfig(cfg.AWS.ConfigPath, cfg.SSOSessionName, resolved); err != nil {
+			if err := aws.WriteConfig(cfg.AWS.ConfigPath, cfg.AWS.SSOSessionName, resolved); err != nil {
 				return err
 			}
 

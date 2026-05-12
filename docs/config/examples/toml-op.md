@@ -14,12 +14,18 @@ This setup means the config file itself can be safely committed to your dotfiles
 default_account = "dev"
 default_role    = "admin"
 use_active_role = false
-region          = "eu-north-1"
-sso_start_url   = "op://Private/AWS/sso_start_url"
 
 [aws]
 credentials_path = "~/.aws/credentials"
 config_path      = "~/.aws/config"
+region           = "eu-north-1"
+sso_start_url    = "op://Private/AWS/sso_start_url"
+sso_session_name = "yak"
+
+[paths]
+cache_dir = "~/.local/share/yak"
+state_dir = "~/.local/share/yak"
+log_dir   = "~/.local/share/yak"
 
 [secrets]
 cache_ttl = 60    # minutes, 0 = no cache

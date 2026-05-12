@@ -82,7 +82,7 @@ func accountCmd(app *appContext) *cobra.Command {
 			roleChangedFromConfig := expectedRoleName != currentRoleName
 
 			if roleChangedFromConfig {
-				if err := aws.WriteConfig(cfg.AWS.ConfigPath, cfg.SSOSessionName, resolved); err != nil {
+				if err := aws.WriteConfig(cfg.AWS.ConfigPath, cfg.AWS.SSOSessionName, resolved); err != nil {
 					return fmt.Errorf("writing AWS config: %w", err)
 				}
 				if err := aws.SsoLoginForProfile(targetName); err != nil {
