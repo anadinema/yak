@@ -76,15 +76,15 @@ yak maintains two files at runtime that are separate from your config and never 
 
 ## Sections
 
-| Section              | Purpose                                                      |
-|----------------------|--------------------------------------------------------------|
-| Global defaults      | `default_account`, `default_role`, `region`, `sso_start_url` |
-| `[aws]`              | Paths for generated AWS files                                |
-| `[secrets]`          | `op://` cache TTL                                            |
-| `[safeguards]`       | Production account protection                                |
-| `[roles]`            | Role tier definitions and values                             |
-| `[[accounts]]`       | Per-account configuration                                    |
-| `[aliases.accounts]` | Short aliases for account names                              |
-| `[aliases.roles]`    | Short aliases for role tier names                            |
+| Section              | Purpose                                                                       |
+|----------------------|-------------------------------------------------------------------------------|
+| Global defaults      | `default_account`, `default_role`, `use_active_role`, `region`, `sso_start_url` |
+| `[aws]`              | Paths for generated AWS files                                                 |
+| `[secrets]`          | `op://` cache TTL                                                             |
+| `[safeguards]`       | Production account protection                                                 |
+| `[roles]`            | Role tier definitions and values                                              |
+| `[[accounts]]`       | Per-account configuration                                                     |
+| `[aliases.accounts]` | Short aliases for account names                                               |
+| `[aliases.roles]`    | Short aliases for role tier names                                             |
 
 See the [full reference](reference.md) for every field.

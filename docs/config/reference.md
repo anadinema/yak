@@ -8,16 +8,18 @@ Complete reference for every field in `~/.config/yak/config.toml` (or `config.ya
 
 Top-level fields that apply to all accounts unless overridden at the account level.
 
-| Field             | Type   | Required | Description                                                                      |
-|-------------------|--------|----------|----------------------------------------------------------------------------------|
-| `default_account` | string | yes      | Account name to use when none is specified. Must match a name in `[[accounts]]`. |
-| `default_role`    | string | yes      | Role tier to use when none is specified. Must match a key in `[roles]`.          |
-| `region`          | string | yes      | AWS region. Can be overridden per account.                                       |
-| `sso_start_url`   | string | yes      | Your AWS SSO portal URL. Supports `${VAR}` and `op://`.                          |
+| Field             | Type   | Required | Description                                                                                               |
+|-------------------|--------|----------|-----------------------------------------------------------------------------------------------------------|
+| `default_account` | string | yes      | Account name to use when none is specified. Must match a name in `[[accounts]]`.                        |
+| `default_role`    | string | yes      | Role tier to use when none is specified. Must match a key in `[roles]`.                                 |
+| `use_active_role` | bool   | no       | If `true`, `yak account` and `yak login` prefer the active role from `~/.local/share/yak/state.json`.  |
+| `region`          | string | yes      | AWS region. Can be overridden per account.                                                                |
+| `sso_start_url`   | string | yes      | Your AWS SSO portal URL. Supports `${VAR}` and `op://`.                                                  |
 
 ```toml
 default_account = "dev"
 default_role    = "admin"
+use_active_role = false
 region          = "eu-west-1"
 sso_start_url   = "${AWS_SSO_URL}"
 ```
@@ -160,7 +162,7 @@ role_overrides = { admin = "${AWS_ADMIN_ROLE}", read_only = "${AWS_READ_ROLE}" }
 
 When yak needs to resolve the role ARN for an account, it applies these rules in order:
 
-1. Determine active role tier — from CLI flag, `yak role` state, account `default_role`, falling back to global `default_role`
+1. Determine active role tier — from CLI flag; otherwise from `yak role` state when `use_active_role = true`; otherwise account `default_role`, falling back to global `default_role`
 2. Check `allowed_roles` — if defined, the active tier must be listed or yak exits with an error
 3. Check safeguards — if the account is protected and the tier's power grade exceeds `max_power_grade_allowed`, yak blocks the operation (unless `--bypass-safeguards` is passed)
 4. Check `role_overrides` — if the account has an override for the active tier, use that role value

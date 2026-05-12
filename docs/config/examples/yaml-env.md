@@ -6,6 +6,7 @@ Complete `~/.config/yak/config.yaml` using environment variables for all sensiti
 # ─── Global defaults ──────────────────────────────────────────────────────────
 default_account: dev
 default_role: admin
+use_active_role: false
 region: eu-north-1
 sso_start_url: "${AWS_SSO_URL}"
 

@@ -8,6 +8,7 @@ This is the recommended starting point. All secrets come from your shell environ
 # ─── Global defaults ──────────────────────────────────────────────────────────
 default_account = "dev"
 default_role    = "admin"
+use_active_role = false
 region          = "eu-north-1"
 sso_start_url   = "${AWS_SSO_URL}"
 

@@ -6,6 +6,7 @@ Complete `~/.config/yak/config.yaml` using 1Password for all sensitive values.
 # ─── Global defaults ──────────────────────────────────────────────────────────
 default_account: dev
 default_role: admin
+use_active_role: false
 region: eu-north-1
 sso_start_url: "op://Private/AWS/sso_start_url"
 
