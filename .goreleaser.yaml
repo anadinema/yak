@@ -59,9 +59,7 @@ homebrew_casks:
             system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/yak"]
           end
     generate_completions_from_executable:
-      executable: "bin/yak"
-      args:
-        - completion
+      executable: "#{staged_path}/yak"
       shell_parameter_format: cobra
       shells:
         - bash
