@@ -30,6 +30,7 @@ nav = [
     { "Commands" = [
         { "Overview" = "commands/index.md" },
         { "Subcommands" = [
+            { "generate" = "commands/generate.md" },
             { "setup" = "commands/setup.md" },
             { "login" = "commands/login.md" },
             { "account" = "commands/account.md" },

@@ -4,6 +4,7 @@ yak provides a focused set of commands for AWS account and credential management
 
 | Command                       | Description                                   |
 |-------------------------------|-----------------------------------------------|
+| [`yak generate`](generate.md) | Generate a minimal config file template       |
 | [`yak setup`](setup.md)       | Generate `~/.aws/config` from your yak config |
 | [`yak login`](login.md)       | SSO login and credential export               |
 | [`yak account`](account.md)   | Switch active AWS account                     |
@@ -19,6 +20,11 @@ These flags work with every command.
 
 | Flag              | Description                                               |
 |-------------------|-----------------------------------------------------------|
-| `--config <path>` | Use a config file at a custom path instead of the default |
 | `--help`          | Show help for the command                                 |
 | `--version`       | Print yak version                                         |
+
+## Global environment variables
+
+| Variable          | Description                                                                    |
+|-------------------|--------------------------------------------------------------------------------|
+| `YAK_CONFIG_FILE` | Override config file path; when unset, defaults to `~/.config/yak/config.toml` |

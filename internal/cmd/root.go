@@ -12,8 +12,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var configPath string
-
 type appContext struct {
 	cfg            *config.Config
 	awsConfigState *state.AWSConfigState
@@ -23,7 +21,7 @@ func (appCtx *appContext) loadConfig() error {
 	if appCtx.cfg != nil {
 		return nil
 	}
-	cfg, err := config.Load(configPath)
+	cfg, err := config.Load()
 	if err != nil {
 		return err
 	}
@@ -57,7 +55,6 @@ func Root() *cobra.Command {
 		SilenceErrors: true,
 	}
 
-	root.PersistentFlags().StringVar(&configPath, "config", "", "path to config file (default: ~/.config/yak/config.toml)")
 	root.PersistentPreRunE = func(cmd *cobra.Command, args []string) error {
 		if shouldSkipConfigLoad(cmd, args) {
 			return nil
@@ -66,6 +63,7 @@ func Root() *cobra.Command {
 	}
 
 	root.AddCommand(
+		generateCmd(),
 		setupCmd(app),
 		loginCmd(app),
 		accountCmd(app),
@@ -85,6 +83,9 @@ func Root() *cobra.Command {
 
 func shouldSkipConfigLoad(cmd *cobra.Command, args []string) bool {
 	if cmd.Name() == "help" {
+		return true
+	}
+	if cmd.Name() == "generate" {
 		return true
 	}
 	if cmd.Parent() == nil && len(args) == 0 {

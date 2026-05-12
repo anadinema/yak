@@ -55,7 +55,7 @@ Fetched via the `op` CLI at runtime. Requires `op` to be installed and the user 
 account_id = "op://Private/AWS Accounts/dev_account_id"
 ```
 
-Results are cached in `~/.local/share/yak/secret_cache` (mode `0600`) for `secrets.cache_ttl` minutes. `yak login` always bypasses this cache.
+Results are cached in `~/.local/share/yak/secret_cache` (mode `0600`) for `secrets.cache_ttl` minutes.
 
 !!! info "Mixing formats"
     You can mix formats freely within a single config file. For example, use plain text for a region, env vars for role names, and 1Password for account IDs.
@@ -66,12 +66,12 @@ Results are cached in `~/.local/share/yak/secret_cache` (mode `0600`) for `secre
 
 yak maintains two files at runtime that are separate from your config and never hand-edited.
 
-| File                              | Purpose                                       |
-|-----------------------------------|-----------------------------------------------|
-| `~/.local/share/yak/state.json`   | Active account and role tier, last login time |
-| `~/.local/share/yak/config.state.json` | Last written resolved AWS profile state |
-| `~/.local/share/yak/secret_cache` | Cached `op://` values with timestamps         |
-| `~/.local/share/yak/audit.log`    | Record of safeguard bypasses                  |
+| File                                   | Purpose                                       |
+|----------------------------------------|-----------------------------------------------|
+| `~/.local/share/yak/state.json`        | Active account and role tier, last login time |
+| `~/.local/share/yak/config.state.json` | Last written resolved AWS profile state       |
+| `~/.local/share/yak/secret_cache`      | Cached `op://` values with timestamps         |
+| `~/.local/share/yak/audit.log`         | Record of safeguard bypasses                  |
 
 You can override these directories with `[paths].cache_dir`, `[paths].state_dir`, and `[paths].log_dir`.
 
@@ -79,16 +79,16 @@ You can override these directories with `[paths].cache_dir`, `[paths].state_dir`
 
 ## Sections
 
-| Section              | Purpose                                                                       |
-|----------------------|-------------------------------------------------------------------------------|
-| Global defaults      | `default_account`, `default_role`, `use_active_role` |
+| Section              | Purpose                                                 |
+|----------------------|---------------------------------------------------------|
+| Global defaults      | `default_account`, `default_role`, `use_active_role`    |
 | `[aws]`              | Paths for generated AWS files + AWS region/SSO settings |
-| `[paths]`            | Runtime directories for cache/state/log files |
-| `[secrets]`          | `op://` cache TTL                                                             |
-| `[safeguards]`       | Production account protection                                                 |
-| `[roles]`            | Role tier definitions and values                                              |
-| `[[accounts]]`       | Per-account configuration                                                     |
-| `[aliases.accounts]` | Short aliases for account names                                               |
-| `[aliases.roles]`    | Short aliases for role tier names                                             |
+| `[paths]`            | Runtime directories for cache/state/log files           |
+| `[secrets]`          | `op://` cache TTL                                       |
+| `[safeguards]`       | Production account protection                           |
+| `[roles]`            | Role tier definitions and values                        |
+| `[[accounts]]`       | Per-account configuration                               |
+| `[aliases.accounts]` | Short aliases for account names                         |
+| `[aliases.roles]`    | Short aliases for role tier names                       |
 
 See the [full reference](reference.md) for every field.

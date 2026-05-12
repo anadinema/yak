@@ -13,25 +13,58 @@ import (
 const (
 	defaultConfigDir  = ".config/yak"
 	defaultConfigName = "config"
+	configFileEnvVar  = "YAK_CONFIG_FILE"
 )
 
-func Load(overridePath string) (*Config, error) {
+func configOverridePath() string {
+	return strings.TrimSpace(os.Getenv(configFileEnvVar))
+}
+
+func defaultConfigDirPath() (string, error) {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "", fmt.Errorf("could not determine home directory: %w", err)
+	}
+	return filepath.Join(home, defaultConfigDir), nil
+}
+
+// ResolveGeneratePath returns the target path for generating a config file.
+// If YAK_CONFIG_FILE is set, that path is always used.
+// Otherwise, the default is ~/.config/yak/config.<format>.
+func ResolveGeneratePath(format string) (string, error) {
+	overridePath := configOverridePath()
+	if overridePath != "" {
+		return overridePath, nil
+	}
+
+	configDir, err := defaultConfigDirPath()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(configDir, defaultConfigName+"."+format), nil
+}
+
+func Load() (*Config, error) {
 	v := viper.New()
+	overridePath := configOverridePath()
 
 	if overridePath != "" {
 		v.SetConfigFile(overridePath)
 	} else {
-		home, err := os.UserHomeDir()
+		configDir, err := defaultConfigDirPath()
 		if err != nil {
-			return nil, fmt.Errorf("could not determine home directory: %w", err)
+			return nil, err
 		}
-		v.AddConfigPath(filepath.Join(home, defaultConfigDir))
+		v.AddConfigPath(configDir)
 		v.SetConfigName(defaultConfigName)
 	}
 
 	if err := v.ReadInConfig(); err != nil {
 		var notFound viper.ConfigFileNotFoundError
 		if errors.As(err, &notFound) {
+			if overridePath != "" {
+				return nil, fmt.Errorf("no config file found at %q from %s", overridePath, configFileEnvVar)
+			}
 			return nil, fmt.Errorf("no config file found at ~/.config/yak/config.toml (or .yaml) — run 'yak setup --help' to get started")
 		}
 		return nil, fmt.Errorf("could not read config: %w", err)

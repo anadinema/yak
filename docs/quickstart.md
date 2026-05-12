@@ -7,10 +7,12 @@ Get yak working in about five minutes.
 ## 1. Create your config file
 
 ```sh
-mkdir -p ~/.config/yak
+yak generate
+# or: yak generate --format yaml
 ```
 
-Create `~/.config/yak/config.toml`. Start minimal — you can add accounts and roles as you go.
+This creates a minimal config template at `YAK_CONFIG_FILE` (if set) or `~/.config/yak/config.toml` by default.
+Open the file and fill required values. Start minimal — you can add accounts and roles as you go.
 
 ```toml
 default_account = "dev"
@@ -23,33 +25,12 @@ region           = "eu-west-1"
 sso_start_url    = "${AWS_SSO_URL}"
 sso_session_name = "yak"
 
-[secrets]
-cache_ttl = 60
-
 [roles]
-read_only = "${AWS_VIEWER_ROLE}"
 developer = "${AWS_DEVELOPER_ROLE}"
-admin     = "${AWS_ELEVATED_ROLE}"
-root      = "${AWS_GODMODE_ROLE}"
 
 [[accounts]]
 name       = "dev"
 account_id = "${AWS_DEV_ACCOUNT_ID}"
-
-[[accounts]]
-name       = "prod"
-account_id    = "${AWS_PROD_ACCOUNT_ID}"
-default_role  = "developer"
-allowed_roles = ["read_only", "developer", "admin"]
-
-[aliases.accounts]
-d = "dev"
-p = "prod"
-
-[aliases.roles]
-ro  = "read_only"
-dev = "developer"
-adm = "admin"
 ```
 
 ---
@@ -68,7 +49,7 @@ export AWS_ELEVATED_ROLE="PrivilegedRole"
 export AWS_GODMODE_ROLE="GodModeRole"
 ```
 
-Or use [1Password](../guides/onepassword.md) — replace any value with `op://vault/item/field`.
+Or use [1Password](guides/onepassword.md) — replace any value with `op://vault/item/field`.
 
 ---
 
@@ -78,7 +59,7 @@ Or use [1Password](../guides/onepassword.md) — replace any value with `op://va
 yak setup
 ```
 
-This reads your `config.toml`, resolves all values, and writes `~/.aws/config`.
+This reads your yak config, resolves all values, and writes `~/.aws/config`.
 
 ---
 
