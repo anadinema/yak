@@ -77,4 +77,4 @@ yak --version
 
 - [Quickstart](quickstart.md) — get up and running in five minutes
 - [Configuration reference](../config/reference.md) — full config file documentation
-- [Shell integration](../guides/shell-integration.md) — set up `AWS_PROFILE` export and optional passthrough
+- [Shell integration](../guides/shell-integration.md) — set up `AWS_PROFILE` export

@@ -1,0 +1,67 @@
+version: 2
+
+project_name: yak
+
+before:
+  hooks:
+    - go mod tidy
+    - go test ./...
+
+builds:
+  - id: yak
+    binary: yak
+    main: ./cmd/yak
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X github.com/anadinema/yak/internal/version.Version={{.Version}}
+      - -X github.com/anadinema/yak/internal/version.Commit={{.Commit}}
+      - -X github.com/anadinema/yak/internal/version.Date={{.Date}}
+
+archives:
+  - id: default
+    formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: "checksums.txt"
+
+release:
+  github:
+    owner: anadinema
+    name: yak
+
+homebrew_casks:
+  - name: yak
+    ids:
+      - yak
+    repository:
+      owner: anadinema
+      name: homebrew-tap
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+    homepage: "https://yak.anadinema.dev"
+    description: "Yet Another AWS Kit — AWS SSO and credential management"
+    license: MIT
+    binaries: ["yak"]
+    generate_completions_from_executable:
+      executable: "bin/yak"
+      args:
+        - completion
+      shell_parameter_format: cobra
+      shells:
+        - bash
+        - zsh
+        - fish
+    url:
+      verified: github.com/anadinema/yak

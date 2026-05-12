@@ -1,0 +1,57 @@
+# ─── Global defaults ──────────────────────────────────────────────────────────
+default_account = "sandbox"
+default_role = "admin"
+region = "us-east-1"
+sso_start_url = "op://vault/secret/sso_url"
+sso_session_name = "aws-sso-name"
+
+[aws]
+credentials_path = "~/.aws/credentials"
+config_path = "~/.aws/config"
+
+[secrets]
+cache_ttl = 60
+
+[safeguards]
+enabled = true
+protected_accounts = ["prod", "mgmt"]
+max_power_grade_allowed = "developer"
+fallback_to_default = true
+
+# ─── Roles ────────────────────────────────────────────────────────────────────
+[roles]
+read_only = "op://vault/secret/viewer_role"
+developer = "op://vault/secret/developer_role"
+admin = "op://vault/secret/privileged_role"
+
+# ─── Accounts ─────────────────────────────────────────────────────────────────
+
+[[accounts]]
+name = "sandbox"
+account_id = "op://vault/secret/sandbox_account"
+
+[[accounts]]
+name = "prod"
+account_id = "op://vault/secret/prod_account"
+default_role = "developer"
+allowed_roles = ["read_only", "developer", "admin"]
+
+[[accounts]]
+name = "mgmt"
+account_id = "op://vault/secret/mgmt_account"
+default_role = "developer"
+allowed_roles = ["read_only", "developer", "admin"]
+
+# ─── Aliases ──────────────────────────────────────────────────────────────────
+[aliases.accounts]
+dev = "sandbox"
+at = "sandbox"
+test = "sandbox"
+sb = "sandbox"
+p = "prod"
+m = "mgmt"
+
+[aliases.roles]
+ro = "read_only"
+dev = "developer"
+adm = "admin"

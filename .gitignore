@@ -18,6 +18,10 @@ __pycache__/
 # Documentation build output
 site/
 
+# temporary files
+temp/
+bin/
+
 # IDE
 .idea/
 .vscode/

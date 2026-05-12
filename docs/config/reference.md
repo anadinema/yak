@@ -59,26 +59,6 @@ cache_ttl = 60
 
 ---
 
-## [passthrough]
-
-Controls whether unknown commands are forwarded to the AWS CLI.
-
-| Field             | Type   | Default | Description                                                                                                                                       |
-|-------------------|--------|---------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| `enabled`         | bool   | `false` | When `true`, commands yak does not recognise are passed to the AWS CLI verbatim.                                                                  |
-| `cli_binary_path` | string | `""`    | Path to the AWS CLI binary. Auto-detected from `PATH` if empty. yak exits with an error if passthrough is enabled but the binary cannot be found. |
-
-```toml
-[passthrough]
-enabled         = false
-cli_binary_path = ""
-```
-
-!!! tip "Using yak as an aws drop-in"
-    With `enabled = true` and `alias aws=yak` in your shell, all your existing `aws` commands continue to work while you get yak's account and role management on top.
-
----
-
 ## [safeguards]
 
 Guards against accidentally using elevated roles on production-like accounts.

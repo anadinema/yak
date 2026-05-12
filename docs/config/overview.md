@@ -81,7 +81,6 @@ yak maintains two files at runtime that are separate from your config and never 
 | Global defaults      | `default_account`, `default_role`, `region`, `sso_start_url` |
 | `[aws]`              | Paths for generated AWS files                                |
 | `[secrets]`          | `op://` cache TTL                                            |
-| `[passthrough]`      | Forwarding unknown commands to the AWS CLI                   |
 | `[safeguards]`       | Production account protection                                |
 | `[roles]`            | Role tier definitions and values                             |
 | `[[accounts]]`       | Per-account configuration                                    |

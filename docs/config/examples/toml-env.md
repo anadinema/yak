@@ -18,10 +18,6 @@ config_path      = "~/.aws/config"
 [secrets]
 cache_ttl = 60    # minutes, 0 = no cache
 
-[passthrough]
-enabled         = false
-cli_binary_path = ""
-
 [safeguards]
 enabled                 = true
 protected_accounts      = ["prod", "mgmt"]

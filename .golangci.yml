@@ -1,0 +1,7 @@
+run:
+  timeout: 2m
+
+linters:
+  default: standard
+
+version: '2'

@@ -16,10 +16,6 @@ aws:
 secrets:
   cache_ttl: 60
 
-passthrough:
-  enabled: false
-  cli_binary_path: ""
-
 safeguards:
   enabled: true
   protected_accounts: [prod, spp, spt]

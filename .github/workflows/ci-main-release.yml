@@ -1,0 +1,73 @@
+name: ci-main-release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    name: build
+    runs-on: macos-latest
+    steps:
+      - name: checkout-repository
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: setup-just
+        uses: extractions/setup-just@v3
+        with:
+          just-version: "1.46.0"
+
+      - name: setup-go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: build-and-test
+        run: just build
+
+  release:
+    runs-on: macos-latest
+    if: ${{ github.ref_type == 'tag' }}
+    needs: build
+    concurrency:
+      group: release-${{ github.repository_id }}
+      cancel-in-progress: true
+    steps:
+      - name: checkout-repository
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: setup-just
+        uses: extractions/setup-just@v3
+        with:
+          just-version: "1.46.0"
+
+      - name: setup-go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: run-goreleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          version: latest
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAP_GITHUB_TOKEN: ${{ secrets.TAP_GITHUB_TOKEN }}

@@ -1,6 +1,6 @@
 # Commands
 
-yak provides a focused set of commands for AWS account and credential management. For anything yak doesn't handle, enable [passthrough](../guides/shell-integration.md#passthrough) to forward commands to the AWS CLI transparently.
+yak provides a focused set of commands for AWS account and credential management.
 
 | Command                       | Description                                   |
 |-------------------------------|-----------------------------------------------|
