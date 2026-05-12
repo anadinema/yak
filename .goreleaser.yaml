@@ -52,6 +52,12 @@ homebrew_casks:
     description: "Yet Another AWS Kit — AWS SSO and credential management"
     license: MIT
     binaries: ["yak"]
+    hooks:
+      post:
+        install: |
+          if OS.mac?
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/yak"]
+          end
     generate_completions_from_executable:
       executable: "bin/yak"
       args:
